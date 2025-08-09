@@ -5,5 +5,31 @@
   <body>
     <h1>Test</h1>
     <p>Paragraph</p>
+    <canvas id="canvas"></canvas>
   </body>
+  <script type="text/javascript">
+    var can = document.getElementById("canvas");
+    var dd = can.getContext("2d");
+
+    can.width = 600;
+    can.height = 500;
+    
+    var mousex, mousey
+    window.addEventListener("mousemove", function (e) {
+      mousex = e.clientX;
+      mousey = e.clientY;
+    }};
+
+    function draw_loop () {
+
+      dd.fillStyle = "rgb(250,250,250)";
+      dd.fillRect(0, 0, can.width, can.height);
+
+      dd.fillStyle = "rgb(0,0,0)";
+      dd.fillRect(mousex, mousey, 10, 20);
+      
+      window.requestAnimationFrame(draw_loop);
+    }
+    draw_loop();
+  </script>
 </html>
