@@ -3,9 +3,8 @@
     <title>My Website Test</title>
   </head>
   <body>
-    <h1>Test</h1>
-    <p>Paragraph</p>
     <canvas id="canvas"></canvas>
+    <h1>Test</h1>
   </body>
   <script type="text/javascript">
     var can = document.getElementById("canvas");
@@ -15,9 +14,15 @@
     can.height = 500;
     
     var mousex, mousey
+    /*
     window.addEventListener("mousemove", function (e) {
       mousex = e.clientX;
       mousey = e.clientY;
+    });
+    */
+    window.addEventListener("touchmove", function (e) {
+      mousex = e.changedTouches[0].pageX;
+      mousey = e.changedTouches[0].pageY;
     });
 
     function draw_loop () {
