@@ -26,10 +26,13 @@
     var mousedown
 
     window.addEventListener("mousedown", function(e){
+      console.log("mousedown");
       mousedown = 1;
     });
 
+    // todo: some bugs with mouse and touch mixing during one isolated click
     window.addEventListener("mouseup", function(e){
+      console.log("mouseup");
       mousedown = 0;
       segments.push(points);
       points = [];
@@ -38,7 +41,8 @@
     window.addEventListener("mousemove", function (e) {
       // mousex = e.clientX;
       // mousey = e.clientY;
-      if (mousedown == 1) {
+      if (mousedown) {
+        console.log("mousemove, mousedown");
         mousex = e.clientX;
         mousey = e.clientY;
         points.push({x:mousex,y:mousey});
@@ -46,11 +50,25 @@
     });
     
     window.addEventListener("touchmove", function (e) {
-      mousex = e.changedTouches[0].pageX;
-      mousey = e.changedTouches[0].pageY;
-      points.push({x:mousex,y:mousey});
+      if (mousedown) {
+        console.log("touchmove, mousedown");
+        mousex = e.changedTouches[0].pageX;
+        mousey = e.changedTouches[0].pageY;
+        points.push({x:mousex,y:mousey});
+      }
     });
 
+    window.addEventListener("touchstart", function(e){
+      console.log("touchstart", e);
+      mousedown = 1;
+    });
+
+    window.addEventListener("touchend", function(e){
+      console.log("touchend", e);
+      mousedown = 0;
+      segments.push(points);
+      points = [];
+    });
 
     var points = [];
     var segments = []    
@@ -61,7 +79,7 @@
       dd.fillRect(0, 0, can.width, can.height);
 
       dd.fillStyle = "rgb(0,0,0)";
-      dd.fillRect(mousex, mousey, 3, 3);
+      dd.fillRect(mousex, mousey, 5, 5);
 
       dd.beginPath();
       dd.strokeStyle = "rgb(255,0,255)";
@@ -77,7 +95,7 @@
         dd.strokeStyle = "black";
         for (var j = 0; j < s.length; j++) {
           var p = s[j];
-          dd.lineTo(p.x, p.y);  
+          dd.lineTo(p.x, p.y);    
         }
       dd.stroke();
       }
